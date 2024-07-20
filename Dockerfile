@@ -1,7 +1,17 @@
-FROM quay.io/teamolduser/docker
+FROM node:lts-buster
 
-COPY . /root/Anyav2
-WORKDIR /root/Anyav2
+RUN apt-get update && \
+  apt-get install -y \
+  ffmpeg \
+  imagemagick \
+  webp && \
+  apt-get upgrade -y && \
+  rm -rf /var/lib/apt/lists/*
+
+COPY package.json .
+
 RUN npm install
-EXPOSE 8000
-CMD ["npm", "start"]
+
+COPY . .
+
+CMD ["node", "."]
